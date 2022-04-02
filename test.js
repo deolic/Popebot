@@ -4,8 +4,10 @@ var jimp = require('jimp'),
     fs = require('fs'),
     request = require('request');
 
+const FB = require('fb');
+
 var popeImage = "papajmaly.png";
-var baseImage = 'test.jpg';
+var baseImage = 'received.jpg';
 
 var baseUrl = "https://www.shitpostbot.com/";
 var requestUri = "api/randsource";
@@ -16,6 +18,7 @@ const https = require('https');
 
 const hostname = 'localhost';
 const port = 8081;
+
 //images(imagePathBase).draw(images(popeImage).resize(180), 245, 120).save("output.jpg");
 
 https.get(baseUrl + requestUri, (resp) => {
@@ -30,7 +33,7 @@ https.get(baseUrl + requestUri, (resp) => {
   resp.on('end', () => {
     imageUri = JSON.parse(data).sub.img.full;
     request(baseUrl + imageUri).pipe(fs.createWriteStream(baseImage));
-
+    console.log("Response received. " + baseUrl + imageUri);
   });
 
 }).on("error", (err) => {
@@ -41,7 +44,6 @@ const server = http.createServer((req, res) => {
   res.statusCode = 200;
   //res.setHeader('Content-Type', 'text/plain');
   res.setHeader('Content-Type', 'application/json');
-
   //res.write(data);
   res.end();
   jimp.read(baseImage, (err, image) => {
@@ -64,3 +66,4 @@ const server = http.createServer((req, res) => {
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
+

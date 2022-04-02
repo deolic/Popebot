@@ -1,18 +1,17 @@
 {
   "name": "popebot-2137",
   "version": "1.0.0",
-  "description": "Dependencies needed to run Popebot 2137",
-  "main": "test.js",
+  "description": "A bot that makes fun of John Paul 2",
+  "main": "bot.js",
+  "type": "module",
   "dependencies": {
+    "dotenv": "^16.0.0",
+    "fb": "^2.0.0",
     "fs": "^0.0.1-security",
-    "http": "^0.0.1-security",
-    "https": "^1.0.0",
+    "got": "^12.0.3",
     "images": "^3.2.3",
-    "jimp": "^0.16.1",
-    "request": "^2.88.2",
-    "url": "^0.11.0"
+    "jimp": "^0.16.1"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
