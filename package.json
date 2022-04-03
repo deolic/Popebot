@@ -9,8 +9,8 @@
     "fb": "^2.0.0",
     "fs": "^0.0.1-security",
     "got": "^12.0.3",
-    "images": "^3.2.3",
-    "jimp": "^0.16.1"
+    "jimp": "^0.16.1",
+    "sharp": "^0.30.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
