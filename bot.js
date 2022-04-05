@@ -5,8 +5,8 @@ import got from 'got';
 import fs from 'fs';
 import sharp from 'sharp';
 
-let baseUrl = 'https://www.shitpostbot.com/';
-let requestUri = 'api/randsource';
+let baseUrl = 'https://www.shitpostbot.com';
+let requestUri = '/api/randsource';
 let fullUrl;
 
 let popeImage = 'papajmaly.png';
@@ -17,8 +17,8 @@ FB.setAccessToken(process.env.FB_API_KEY);
 got(baseUrl + requestUri)
   .then(function (response) {
     let imageUri = JSON.parse(response.body).sub.img.full;
-    fullUrl = baseUrl + imageUri;
-    sendRequest(fullUrl, baseImage);
+    fullUrl = baseUrl + JSON.parse(response.body).sub.link;
+    sendRequest(baseUrl + '/' + imageUri, baseImage);
   })
   .catch(function (error) {
     console.log(error);
@@ -39,15 +39,30 @@ function sendRequest(url, image) {
 function editImage(baseImage) {
   jimp.read(baseImage, (err, image) => {
     if (err) throw err;
-    let size = Math.floor((Math.random() * (image.bitmap.width/2)) + 1);
     let x = Math.floor((Math.random() * image.bitmap.width) + 1);
     let y = Math.floor((Math.random() * image.bitmap.height) + 1);
-    console.log(size);
-    sharp(popeImage).resize({ width: size }).toBuffer().then((rescaledPope) => {
-      sharp(baseImage).composite([{ input: rescaledPope, left: x-Math.floor(size/2), top: y }]).toFile('output.jpg').then(() => {
+    let popeWidth, popeHeight;
+    if (image.bitmap.width > image.bitmap.height) {
+      popeWidth = Math.floor((Math.random() * (image.bitmap.width/2)) + 5);
+      sharp(popeImage).resize({ width: popeWidth }).toBuffer().then((rescaledPope) => {
+        sharp(rescaledPope).metadata().then((metadata) => {
+          popeHeight = metadata.height;
+          sharp(baseImage).composite([{ input: rescaledPope, left: x-Math.floor(popeWidth/2), top: y-Math.floor(popeHeight/2) }]).toFile('output.jpg').then(() => {
         postImage('output.jpg');
+          })
       })
     });
+    } else {
+      popeHeight = Math.floor((Math.random() * (image.bitmap.height/2)) + 5);
+      sharp(popeImage).resize({ height: popeHeight }).toBuffer().then((rescaledPope) => {
+        sharp(rescaledPope).metadata().then((metadata) => {
+          popeWidth = metadata.width;
+          sharp(baseImage).composite([{ input: rescaledPope, left: x-Math.floor(popeWidth/2), top: y-Math.floor(popeHeight/2) }]).toFile('output.jpg').then(() => {
+            postImage('output.jpg');
+          })
+      })
+    });
+    }
   });
 }
 
