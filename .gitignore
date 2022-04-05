@@ -1,5 +1,6 @@
 node_modules
 *.jpg
+test.js
 
 # local env files
 .env
