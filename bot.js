@@ -42,7 +42,7 @@ function editImage(baseImage) {
     let x = Math.floor((Math.random() * image.bitmap.width) + 1);
     let y = Math.floor((Math.random() * image.bitmap.height) + 1);
     let popeWidth, popeHeight;
-    if (image.bitmap.width > image.bitmap.height) {
+    if (image.bitmap.width < image.bitmap.height) {
       popeWidth = Math.floor((Math.random() * (image.bitmap.width/2)) + 5);
       sharp(popeImage).resize({ width: popeWidth }).toBuffer().then((rescaledPope) => {
         sharp(rescaledPope).metadata().then((metadata) => {
